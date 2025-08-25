@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
         try {
-            const response = await fetch('http://localhost:3000/api/users', {
+            const response = await fetch('https://ls-api-a1.vercel.app', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
