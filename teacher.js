@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function fetchAndDisplayStudents() {
         try {
             studentListContainer.innerHTML = '<p>Cargando lista de alumnos...</p>';
-            const response = await fetch('https://ls-api-a1.vercel.app', {
+            const response = await fetch('https://ls-api-a1.vercel.app/api/users/register', {
                 headers: {
                     'Authorization': `Bearer ${token}` // Añadir token de autenticación
                 }
