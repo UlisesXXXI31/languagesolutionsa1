@@ -49,8 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
 
     // Sonidos
-    const sonidoCorrcto = new Audio("/audios/correcto.mp3");
-    const sonidoIncorrecto = new Audio("/audios/incorrecto.mp3");
+    const sonidoCorrcto = new Audio("audios/correcto.mp3");
+    const sonidoIncorrecto = new Audio("audios/incorrecto.mp3");
 
    // Registro del Service Worker
 function registerServiceWorker() {
