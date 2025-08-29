@@ -266,11 +266,11 @@ registerServiceWorker();
             completed: true
         };
 
-        fetch('http://localhost:3000/api/progress', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(progressData)
-        })
+        fetch(`${API_BASE_URL}/api/progress`, {
+           method: 'POST',
+           headers: { 'Content-Type': 'application/json' },
+           body: JSON.stringify(progressData)
+       })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error al guardar el progreso en el servidor.');
