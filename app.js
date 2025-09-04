@@ -112,6 +112,7 @@ registerServiceWorker();
     // Lógica de cerrar sesión
     if (btnLogout) {
         btnLogout.addEventListener('click', () => {
+            console.log("Botón 'Cerrar Sesión' pulsado. Llamando a guardar puntuación...");
             localStorage.removeItem('token');
             localStorage.removeItem('role');
             localStorage.removeItem('userData');
@@ -204,6 +205,7 @@ registerServiceWorker();
 
     if (btnVolverLecciones) {
         btnVolverLecciones.addEventListener("click", () => {
+            console.log("Botón 'Volver a Lecciones' pulsado. Llamando a guardar puntuación...");
             guardarPuntuacionEnHistorial();
             mostrarPantalla("pantalla-lecciones");
             mostrarLecciones();
@@ -234,6 +236,7 @@ registerServiceWorker();
 
     // Funciones de historial y API
     function guardarPuntuacionEnHistorial() {
+        console.log("Dentro de guardarPuntuacionEnHistorial()...");
         const userData = JSON.parse(localStorage.getItem('userData'));
         if (!userData || !userData.id) {
             console.error("Error: No se pudo guardar el progreso. Usuario no autenticado.");
