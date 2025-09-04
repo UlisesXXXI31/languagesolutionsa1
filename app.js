@@ -267,6 +267,9 @@ registerServiceWorker();
             score: puntosSesion,
             completed: true
         };
+        
+          // --- PUNTOS DE CONTROL ---
+    console.log("Intentando enviar los siguientes datos de progreso:", progressData);
 
         fetch(`${API_BASE_URL}/api/progress`, {
            method: 'POST',
@@ -283,8 +286,9 @@ registerServiceWorker();
                 console.log("Progreso guardado con éxito en el servidor:", data);
             })
             .catch(error => {
-                console.error('Hubo un problema con la petición:', error);
+                 console.error('ERROR GRAVE al guardar el progreso en el servidor:', error);
             });
+        
 
         const historial = JSON.parse(localStorage.getItem("historialPuntos")) || [];
         historial.push({
