@@ -112,7 +112,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const ul = document.createElement('ul');
             data.progress.forEach(entry => {
                 const li = document.createElement('li');
-                const date = new Date(entry.timestamp).toLocaleString();
+                // He cambiado 'entry.timestamp' a 'entry.completedAt' para que coincida con tu modelo
+        const date = new Date(entry.completedAt).toLocaleString(); 
                 li.textContent = `Fecha: ${date}, Lección: ${entry.lessonName}, Tarea: ${entry.taskName}, Puntos: ${entry.score}`;
                 ul.appendChild(li);
             });
