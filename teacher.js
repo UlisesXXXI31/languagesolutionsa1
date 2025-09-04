@@ -87,13 +87,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         studentNameTitle.textContent = studentName;
         progressHistoryContainer.innerHTML = '<p>Cargando historial de progreso...</p>';
         
-        try {
-            // CORREGIDO: Usa la variable API_BASE_URL
-            const response = await fetch(`${API_BASE_URL}/api/progress/${userId}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
+       try {
+    // --- ¡ESTA ES LA LÍNEA CORREGIDA! ---
+    // La URL se cierra con la comilla ` y luego viene la coma y el objeto de opciones
+    const response = await fetch(`${API_BASE_URL}/api/progress/${userId}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
             
             if (!response.ok) {
                 const errorData = await response.json();
