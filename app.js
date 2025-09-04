@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/service-worker.js', {
+            navigator.serviceWorker.register('/languagesolutionsa1/service-worker.js', {
                 scope: '/'
             })
             .then(function(registration) {
