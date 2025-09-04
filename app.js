@@ -265,7 +265,7 @@ registerServiceWorker();
 
         const progressData = {
             user: userData.id,
-            lessonname: leccionActual ? leccionActual.nombre : "Sin lección",
+            lessonName: leccionActual ? leccionActual.nombre : "Sin lección",
             taskName: actividadActual || "Sin actividad",
             score: puntosSesion,
             completed: true
