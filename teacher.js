@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', async () => {
        try {
     // --- ¡ESTA ES LA LÍNEA CORREGIDA! ---
     // La URL se cierra con la comilla ` y luego viene la coma y el objeto de opciones
-    const response = await fetch(`${API_BASE_URL}/api/progress/${userId}`, {
+    const response = await fetch(`${API_BASE_URL}/api/progress/${user}`, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
