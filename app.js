@@ -236,7 +236,7 @@ registerServiceWorker();
         });
     }
 
-    // Funciones de historial y API
+  // Funciones de historial y API
     function guardarPuntuacionEnHistorial() {
         console.log("Dentro de guardarPuntuacionEnHistorial()...");
         const userData = JSON.parse(localStorage.getItem('userData'));
@@ -264,21 +264,14 @@ registerServiceWorker();
             puntosUltimaSesion = puntos;
             return;
         }
-        // --- ¡LA LÓGICA CLAVE ESTÁ AQUÍ! ---
-    // Comprobamos si la actividad tiene preguntas y si el índice actual
-    // es mayor o igual al número total de preguntas.
-    const isCompleted = actividadActual && actividadActual.questions 
-                        ? (ejercicioActualIndex >= actividadActual.questions.length) 
-                        : false;
-    // --------------------------------------------------
 
-         const progressData = {
-        user: userData.id,
-        lessonName: leccionActual ? leccionActual.title : "Lección desconocida",
-        taskName: actividadActual ? actividadActual.title : "Actividad desconocida",
-        score: puntosSesion,
-        completed: isCompleted // <-- Usamos la variable que acabamos de calcular
-    };
+        const progressData = {
+    user: userData.id,
+    lessonName: leccionActual ? leccionActual.nombre : "Sin lección", // <-- 'n' minúscula
+    taskName: actividadActual || "Sin actividad",
+    score: puntosSesion,
+    completed: true
+};
         
           // --- PUNTOS DE CONTROL ---
     console.log("Intentando enviar los siguientes datos de progreso:", progressData);
@@ -313,6 +306,7 @@ registerServiceWorker();
         localStorage.setItem("historialPuntos", JSON.stringify(historial));
         puntosUltimaSesion = puntos;
     }
+
 
     function mostrarHistorial() {
         const historialContainer = document.getElementById("historial-container");
