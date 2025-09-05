@@ -264,17 +264,47 @@ registerServiceWorker();
             puntosUltimaSesion = puntos;
             return;
         }
+        // --- LÓGICA PARA DETERMINAR SI LA ACTIVIDAD FUE COMPLETADA ---
+        let isCompleted = false;
+        // Comprobamos si la actividad tiene preguntas y si el índice actual ha llegado al final
+if (actividadActual && leccionActual && leccionActual.palabras) {
+    
+    // La lógica varía según el juego. Aquí un ejemplo para los que usan un índice simple.
+    // Asumimos que los juegos terminan cuando el índice llega al total de palabras.
+    let totalItems = leccionActual.palabras.length;
+    let currentIndex = 0;
 
-        const progressData = {
+    if (actividadActual === 'traducir') {
+        currentIndex = traducirIndice;
+    } else if (actividadActual === 'eleccion-multiple') {
+        currentIndex = eleccionIndice;
+    } else if (actividadActual === 'escuchar') {
+        currentIndex = escucharIndice;
+    }
+    // Para 'emparejar', la lógica es cuando se termina el último bloque.
+    else if (actividadActual === 'emparejar') {
+        if (emparejarBloque * BLOQUE_TAMANIO >= totalItems) {
+            isCompleted = true;
+        }
+    }else if (actividadActual === 'pronunciar'){
+        currentIndex = pronunciarIndice;
+    }
+    
+    // Comprobación para los juegos basados en índice
+    if (currentIndex >= totalItems) {
+        isCompleted = true;
+    }
+}
+
+       const progressData = {
     user: userData.id,
-    lessonName: leccionActual ? leccionActual.nombre : "Sin lección", // <-- 'n' minúscula
-    taskName: actividadActual || "Sin actividad",
+    lessonName: leccionActual.nombre, 
+    taskName: actividadActual,
     score: puntosSesion,
-    completed: true
+    completed: isCompleted // <-- ¡Usamos la variable que acabamos de calcular!
 };
-        
-          // --- PUNTOS DE CONTROL ---
-    console.log("Intentando enviar los siguientes datos de progreso:", progressData);
+
+console.log("Enviando datos de progreso con 'completed' dinámico:", progressData);
 
         fetch(`${API_BASE_URL}/api/progress`, {
            method: 'POST',
