@@ -110,11 +110,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             const ul = document.createElement('ul');
+           
             data.progress.forEach(entry => {
                 const li = document.createElement('li');
                 // He cambiado 'entry.timestamp' a 'entry.completedAt' para que coincida con tu modelo
-        const date = new Date(entry.completedAt).toLocaleString(); 
-                li.textContent = `Fecha: ${date}, Lección: ${entry.lessonName}, Tarea: ${entry.taskName}, Puntos: ${entry.score}`;
+           const date = new Date(entry.completedAt).toLocaleString(); 
+                
+               // 1. Creamos un texto para el estado basándonos en el valor booleano
+           const statusText = entry.completed ? '✅ Completada' : '🔄 Incompleta';
+
+    // 2. Añadimos el nuevo texto al final de la línea
+             li.textContent = `Fecha: ${date}, Lección: ${entry.lessonName}, Tarea: ${entry.taskName}, Puntos: ${entry.score} | Estado: ${statusText}`;
                 ul.appendChild(li);
             });
             progressHistoryContainer.appendChild(ul);
