@@ -57,8 +57,10 @@ document.addEventListener("DOMContentLoaded", () => {
 function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/languagesolutionsa1/service-worker.js', {
-                scope: '/'
+navigator.serviceWorker.register('/languagesolutionsa1/service-worker.js', {
+    scope: '/languagesolutionsa1/' // <-- ¡AÑADE/CORRIGE ESTA LÍNEA!
+})
+// ... el resto de tu .then y .catch'
             })
             .then(function(registration) {
                 console.log('✅ SW registrado correctamente con scope:', registration.scope);
