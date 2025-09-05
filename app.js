@@ -264,12 +264,12 @@ registerServiceWorker();
         }
 
         const progressData = {
-            user: userData.id,
-            lessonName: leccionActual ? leccionActual.nombre : "Sin lección",
-            taskName: actividadActual || "Sin actividad",
-            score: puntosSesion,
-            completed: true
-        };
+    user: userData.id,
+    lessonName: leccionActual ? leccionActual.nombre : "Sin lección", // <-- 'n' minúscula
+    taskName: actividadActual || "Sin actividad",
+    score: puntosSesion,
+    completed: true
+};
         
           // --- PUNTOS DE CONTROL ---
     console.log("Intentando enviar los siguientes datos de progreso:", progressData);
