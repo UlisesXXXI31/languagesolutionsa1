@@ -260,3 +260,4 @@ function generateRandomPassword() {
   }
   return password;
 }
+});
