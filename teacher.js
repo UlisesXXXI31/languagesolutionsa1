@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
     // Carga inicial de los alumnos
     fetchAndDisplayStudents();
-});
+
 
     // Evento para añadir un nuevo alumno al enviar el formulario
     // REEMPLAZA LA FUNCIÓN COMPLETA DEL FORMULARIO CON ESTA
