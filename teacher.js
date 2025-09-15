@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
      // Evento para añadir un nuevo profesor al enviar el formulario
     
-    form.addEventListener('submit', async (e) => {
+    teacherForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = teacherNameInput.value;
     const email = teacherEmailInput.value;
@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Evento para añadir un nuevo alumno al enviar el formulario
     // REEMPLAZA LA FUNCIÓN COMPLETA DEL FORMULARIO CON ESTA
 
-form.addEventListener('submit', async (e) => {
+studentForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = studentNameInput.value;
     const email = studentEmailInput.value;
