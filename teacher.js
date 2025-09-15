@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             //alerta para mostrar la contraseña temporal
              alert(`¡Importante! La contraseña temporal para ${name} es: ${password}`);
             
-            form.reset();
+            teacherForm.reset();
             await fetchAndDisplayStudents(); // Refresca la lista de alumnos
         } else {
             statusMessage.textContent = `Error al añadir profesor: ${data.message}`;
@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         statusMessage.style.color = "red";
         console.error("Error:", error);
     }
-});
+
     // Carga inicial de los alumnos
     fetchAndDisplayStudents();
 });
@@ -235,7 +235,7 @@ studentForm.addEventListener('submit', async (e) => {
             //alerta para mostrar la contraseña temporal
              alert(`¡Importante! La contraseña temporal para ${name} es: ${password}`);
             
-            form.reset();
+            studentForm.reset();
             await fetchAndDisplayStudents(); // Refresca la lista de alumnos
         } else {
             statusMessage.textContent = `Error al añadir alumno: ${data.message}`;
@@ -246,11 +246,10 @@ studentForm.addEventListener('submit', async (e) => {
         statusMessage.style.color = "red";
         console.error("Error:", error);
     }
-});
 
     // Carga inicial de los alumnos
     fetchAndDisplayStudents();
-
+});
 
 // Función para generar una contraseña aleatoria de 8 caracteres
 function generateRandomPassword() {
