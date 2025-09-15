@@ -15,11 +15,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Referencias a los elementos del DOM
-    const form = document.getElementById('form-add-student');
+    const studentForm = document.getElementById('form-add-student');
     const studentNameInput = document.getElementById('student-name');
     const studentEmailInput = document.getElementById('student-email');
     
-    const form = document.getElementById('form-add-teacher');
+    const teacherForm = document.getElementById('form-add-teacher');
     const teacherNameInput = document.getElementById('teacher-name');
     const teacherEmailInput = document.getElementById('teacher-email');
     
