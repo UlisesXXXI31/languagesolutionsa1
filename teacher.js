@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
     // Carga inicial de los alumnos
     fetchAndDisplayStudents();
-
+});
 
     // Evento para añadir un nuevo alumno al enviar el formulario
     // REEMPLAZA LA FUNCIÓN COMPLETA DEL FORMULARIO CON ESTA
@@ -250,7 +250,7 @@ form.addEventListener('submit', async (e) => {
 
     // Carga inicial de los alumnos
     fetchAndDisplayStudents();
-});
+
 
 // Función para generar una contraseña aleatoria de 8 caracteres
 function generateRandomPassword() {
