@@ -233,7 +233,7 @@ studentForm.addEventListener('submit', async (e) => {
             statusMessage.textContent = `¡Alumno ${name} añadido con éxito!`;
             statusMessage.style.color = "green";
             //alerta para mostrar la contraseña temporal
-             alert(`¡Importante! La contraseña temporal para ${name} es: ${password}`);
+             alert(`¡Importante! La contraseñapara ${name} es: ${password}`);
             
             studentForm.reset();
             await fetchAndDisplayStudents(); // Refresca la lista de alumnos
