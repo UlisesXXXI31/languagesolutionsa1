@@ -198,7 +198,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     fetchAndDisplayStudents();
 });
 
-    // Evento para añadir un nuevo alumno al enviar el formulario
     // REEMPLAZA LA FUNCIÓN COMPLETA DEL FORMULARIO CON ESTA
 
 studentForm.addEventListener('submit', async (e) => {
@@ -234,7 +233,7 @@ studentForm.addEventListener('submit', async (e) => {
             // así que usamos el nombre que ya tenemos.
             studentStatusMessage.textContent = `¡Alumno ${name} añadido con éxito!`;
             studentStatusMessage.style.color = "green";
-           
+            
             
             studentForm.reset();
             await fetchAndDisplayStudents(); // Refresca la lista de alumnos
@@ -247,11 +246,11 @@ studentForm.addEventListener('submit', async (e) => {
         studentStatusMessage.style.color = "red";
         console.error("Error:", error);
     }
-
-    // Carga inicial de los alumnos
-    fetchAndDisplayStudents();
 });
 
+// Carga inicial de los alumnos
+fetchAndDisplayStudents();
+    
 // Función para generar una contraseña aleatoria de 8 caracteres
 function generateRandomPassword() {
   const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
