@@ -232,7 +232,7 @@ studentForm.addEventListener('submit', async (e) => {
         if (response.ok) {
             // La respuesta de tu API de registro no devuelve data.user.name,
             // así que usamos el nombre que ya tenemos.
-            studentstatusMessage.textContent = `¡Alumno ${name} añadido con éxito!`;
+            studentStatusMessage.textContent = `¡Alumno ${name} añadido con éxito!`;
             studentStatusMessage.style.color = "green";
            
             
