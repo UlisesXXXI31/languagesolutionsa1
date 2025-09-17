@@ -203,7 +203,7 @@ studentForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = studentNameInput.value;
     const email = studentEmailInput.value;
-    const password = generateRandomPassword() ;
+    const password = 'EisA1' ;
     statusMessage.textContent = "Añadiendo alumno...";
     statusMessage.style.color = "black";
 
@@ -232,8 +232,7 @@ studentForm.addEventListener('submit', async (e) => {
             // así que usamos el nombre que ya tenemos.
             statusMessage.textContent = `¡Alumno ${name} añadido con éxito!`;
             statusMessage.style.color = "green";
-            //alerta para mostrar la contraseña temporal
-             alert(`¡Importante! La contraseñapara ${name} es: ${password}`);
+           
             
             studentForm.reset();
             await fetchAndDisplayStudents(); // Refresca la lista de alumnos
