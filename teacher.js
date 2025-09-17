@@ -246,10 +246,11 @@ studentForm.addEventListener('submit', async (e) => {
         studentStatusMessage.style.color = "red";
         console.error("Error:", error);
     }
-});
+
 
 // Carga inicial de los alumnos
 fetchAndDisplayStudents();
+    });
     
 // Función para generar una contraseña aleatoria de 8 caracteres
 function generateRandomPassword() {
