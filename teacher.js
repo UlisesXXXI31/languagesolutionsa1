@@ -47,6 +47,94 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function fetchAndDisplayStudents() {
         try {
             studentListContainer.innerHTML = '<p>Cargando lista de alumnos...</p>';
+            const response = await fetch(`${API_BASE_URL}/api/users`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error al cargar alumnos');
+            }
+
+            const data = await response.json();
+            studentListContainer.innerHTML = '';
+
+            // Filtra solo los usuarios con el rol 'student'
+            const students = data.users.filter(user => user.role === 'student');
+
+            if (students.length === 0) {
+                studentListContainer.innerHTML = '<p>No hay alumnos registrados aún.</p>';
+                return;
+            }
+
+            students.forEach(user => {
+                const studentCard = document.createElement('div');
+                studentCard.className = 'student-card';
+                studentCard.innerHTML = `
+                    <h2>${user.name}</h2>
+                    <ul>
+                        <li><strong>Email:</strong> ${user.email}</li>
+                    </ul>
+                `;
+                studentCard.style.cursor = 'pointer';
+                studentCard.addEventListener('click', () => showStudentProgress(user._id, user.name));
+                studentListContainer.appendChild(studentCard);
+            });
+
+        } catch (error) {
+            studentListContainer.innerHTML = `<p style="color:red;">Error al cargar alumnos: ${error.message}. Asegúrate de que el servidor está funcionando.</p>`;
+            console.error("Error:", error);
+        }
+    }
+
+    // Función para mostrar el progreso de un alumno
+    async function showStudentProgress(userId, studentName) {
+        studentListContainer.style.display = 'none';
+        studentProgressSection.style.display = 'block';
+        studentNameTitle.textContent = studentName;
+        progressHistoryContainer.innerHTML = '<p>Cargando historial de progreso...</p>';
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/progress/${userId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error al obtener el historial de progreso.');
+            }
+            
+            const data = await response.json();
+            progressHistoryContainer.innerHTML = '';
+
+            if (data.progress.length === 0) {
+                progressHistoryContainer.innerHTML = '<p>No hay historial de progreso para este alumno.</p>';
+                return;
+            }
+
+            const ul = document.createElement('ul');
+            
+            data.progress.forEach(entry => {
+                const li = document.createElement('li');
+                const date = new Date(entry.completedAt).toLocaleString();
+                const statusText = entry.completed ? '✅ Completada' : '🔄 Incompleta';
+                li.textContent = `Fecha: ${date}, Lección: ${entry.lessonName}, Tarea: ${entry.taskName}, Puntos    if (btnLogout) {
+        btnLogout.addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+            localStorage.removeItem('userData');
+            window.location.href = 'login.html';
+        });
+    }
+
+    // Función para obtener y mostrar la lista de alumnos
+    async function fetchAndDisplayStudents() {
+        try {
+            studentListContainer.innerHTML = '<p>Cargando lista de alumnos...</p>';
             // CORREGIDO: Usa la variable API_BASE_URL
             const response = await fetch(`${API_BASE_URL}/api/users`, {
                 headers: {
