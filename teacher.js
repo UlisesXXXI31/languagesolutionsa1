@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ name, email, password, role: 'profesor' })
+            body: JSON.stringify({ name, email, password, role: 'teacher' })
         });
         
         const data = await response.json();
@@ -223,7 +223,7 @@ studentForm.addEventListener('submit', async (e) => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ name, email, password, role: 'alumno' })
+            body: JSON.stringify({ name, email, password, role: 'student' })
         });
         
         const data = await response.json();
