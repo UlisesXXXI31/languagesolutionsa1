@@ -235,7 +235,7 @@ registerServiceWorker();
         });
     }
 
-    if (btnGuaradarPuntos){
+    if (btnGuardarPuntos){
         btnGuardarPuntos.addEventListener("click", () => {
             console.log("Botón 'Guardar Puntos' pulsado. Llamando a guardar puntuación...");
               guardarPuntuacionEnHistorial();
