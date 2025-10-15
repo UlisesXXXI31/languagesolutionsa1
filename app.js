@@ -60,7 +60,7 @@ function registerServiceWorker() {
 navigator.serviceWorker.register('/languagesolutionsa1/service-worker.js', {
     scope: '/languagesolutionsa1/' // <-- ¡AÑADE/CORRIGE ESTA LÍNEA!
 })
-// ... el resto de tu .then y .catch'
+// ... el resto del .then y .catch'
             
             .then(function(registration) {
                 console.log('✅ SW registrado correctamente con scope:', registration.scope);
@@ -392,12 +392,20 @@ console.log("Enviando datos de progreso con 'completed' dinámico:", progressDat
         traducirIndice = 0;
         mostrarPalabraTraducir();
     }
-
+  funcion mezclarPalabras(TraducirPalabras){
+            array.sort(() => Math.random() - 0.5);
+        }
+    
     function mostrarPalabraTraducir() {
         if (traducirIndice >= traducirPalabras.length) {
             if (actividadJuego) actividadJuego.innerHTML = `<p>Has terminado la actividad Traducir.</p>`;
+             mezclarpalabras(TraducirPalabras);
+            
             return;
+          
         }
+      
+        
         const palabra = traducirPalabras[traducirIndice];
         if (actividadJuego) {
             actividadJuego.innerHTML = `
