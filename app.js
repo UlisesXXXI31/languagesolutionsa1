@@ -390,17 +390,16 @@ console.log("Enviando datos de progreso con 'completed' dinámico:", progressDat
     function iniciarTraducir() {
         traducirPalabras = [...leccionActual.palabras];
         traducirIndice = 0;
-        mostrarPalabraTraducir();
+         mezclarpalabras(TraducirPalabras);
+         mostrarPalabraTraducir();
     }
-  function mezclarPalabras(TraducirPalabras){
+  function mezclarPalabras(array){
             array.sort(() => Math.random() - 0.5);
         }
     
     function mostrarPalabraTraducir() {
         if (traducirIndice >= traducirPalabras.length) {
             if (actividadJuego) actividadJuego.innerHTML = `<p>Has terminado la actividad Traducir.</p>`;
-             mezclarpalabras(TraducirPalabras);
-            
             return;
           
         }
