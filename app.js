@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const puntosTexto = document.getElementById("puntos");
     const btnReiniciarPuntos = document.getElementById("btn-reiniciar-puntos");
     const btnVerHistorial = document.getElementById("btn-ver-historial");
+    const btnGuaradarPuntos = document.getElementById("btn-guardar-puntos");
     const pantallaListaPalabras = document.getElementById("pantalla-lista-palabras");
     const listaPalabrasContainer = document.getElementById("lista-palabras-container");
     const tituloListaLeccion = document.getElementById("titulo-lista-leccion");
@@ -207,8 +208,6 @@ registerServiceWorker();
 
     if (btnVolverLecciones) {
         btnVolverLecciones.addEventListener("click", () => {
-            console.log("Botón 'Volver a Lecciones' pulsado. Llamando a guardar puntuación...");
-            guardarPuntuacionEnHistorial();
             mostrarPantalla("pantalla-lecciones");
             mostrarLecciones();
             actividadJuego.innerHTML = "";
@@ -233,6 +232,13 @@ registerServiceWorker();
         btnSalirHistorial.addEventListener("click", () => {
             mostrarPantalla("pantalla-lecciones");
             mostrarLecciones();
+        });
+    }
+
+    if (btnGuaradarPuntos){
+        btnGuardarPuntos.addEventListener("click", () => {
+            console.log("Botón 'Guardar Puntos' pulsado. Llamando a guardar puntuación...");
+              guardarPuntuacionEnHistorial();
         });
     }
 
