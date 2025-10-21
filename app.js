@@ -735,7 +735,7 @@ function seleccionarEmparejar(tipo, btn, valor) {
         mostrarPalabraPronunciacion();
     }
 
-    fucntion mezclarPalabras(array){
+    function mezclarPalabras(array){
         array.sort(() => Math.random() - 0.5);
     }
 
