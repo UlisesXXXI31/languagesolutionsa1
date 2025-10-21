@@ -660,7 +660,7 @@ function seleccionarEmparejar(tipo, btn, valor) {
         mezclarPalabras(escucharpalabras);
         mostrarPalabraEscuchar();
     }
-    function mezclarpalabras(array){
+    function mezclarPalabras(array){
         array.sort(() => Math.random() - 0.5);
     }
 
