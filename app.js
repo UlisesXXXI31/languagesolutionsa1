@@ -58,8 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
 function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-navigator.serviceWorker.register('/languagesolutionsa1/service-worker.js', {
-    scope: '/languagesolutionsa1/' // <-- ¡AÑADE/CORRIGE ESTA LÍNEA!
+navigator.serviceWorker.register('/voKbloa1/service-worker.js', {
+    scope: '/voKbloa1/' // <-- ¡AÑADE/CORRIGE ESTA LÍNEA!
 })
 // ... el resto del .then y .catch'
             
