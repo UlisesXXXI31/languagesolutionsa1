@@ -657,7 +657,7 @@ function seleccionarEmparejar(tipo, btn, valor) {
     function iniciarEscuchar() {
         escucharPalabras = [...leccionActual.palabras];
         escucharIndice = 0;
-        mezclarPalabras(escucharpalabras);
+        mezclarPalabras(escucharPalabras);
         mostrarPalabraEscuchar();
     }
     function mezclarPalabras(array){
