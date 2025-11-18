@@ -23,6 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let leccionActual = null;
     let actividadActual = null;
 
+    // <<< INICIO CÓDIGO RACHA >>>
+    let rachaActual = parseInt(localStorage.getItem('rachaActual')) || 0;
+    let ultimaFechaActividad = localStorage.getItem('ultimaFechaActividad') || null;
+    // <<< FIN CÓDIGO RACHA >>>
+
     // Elementos del DOM
     const pantallaLecciones = document.getElementById("pantalla-lecciones");
     const pantallaActividades = document.getElementById("pantalla-actividades");
@@ -47,51 +52,54 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnVolverLecciones = document.getElementById("btn-volver-lecciones");
     const btnVolverActividades = document.getElementById("btn-volver-actividades");
     const btnLogout = document.getElementById('btn-logout');
-
-  
+    
+    // <<< INICIO CÓDIGO RACHA - Elemento DOM >>>
+    const rachaElemento = document.getElementById('racha-display'); 
+    // <<< FIN CÓDIGO RACHA - Elemento DOM >>>
+    
 
     // Sonidos
     const sonidoCorrcto = new Audio("audios/correcto.mp3");
     const sonidoIncorrecto = new Audio("audios/incorrecto.mp3");
 
-   // Registro del Service Worker
-function registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-navigator.serviceWorker.register('/voKbloa1/service-worker.js', {
-    scope: '/voKbloa1/' // <-- ¡AÑADE/CORRIGE ESTA LÍNEA!
-})
-// ... el resto del .then y .catch'
-            
-            .then(function(registration) {
-                console.log('✅ SW registrado correctamente con scope:', registration.scope);
+    // Registro del Service Worker
+    function registerServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/voKbloa1/service-worker.js', {
+                    scope: '/voKbloa1/' // <-- ¡AÑADE/CORRIGE ESTA LÍNEA!
+                })
+                // ... el resto del .then y .catch'
                 
-                // Opcional: Verificar updates
-                registration.addEventListener('updatefound', function() {
-                    const newWorker = registration.installing;
-                    console.log('🔄 Nueva versión de SW encontrada');
+                .then(function(registration) {
+                    console.log('✅ SW registrado correctamente con scope:', registration.scope);
                     
-                    newWorker.addEventListener('statechange', function() {
-                        console.log('📊 Estado del nuevo SW:', newWorker.state);
+                    // Opcional: Verificar updates
+                    registration.addEventListener('updatefound', function() {
+                        const newWorker = registration.installing;
+                        console.log('🔄 Nueva versión de SW encontrada');
+                        
+                        newWorker.addEventListener('statechange', function() {
+                            console.log('📊 Estado del nuevo SW:', newWorker.state);
+                        });
+                    });
+                })
+                .catch(function(error) {
+                    console.log('❌ Error registrando SW:', error);
+                    
+                    // Debug adicional
+                    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                        console.log('📋 SWs actualmente registrados:', registrations.length);
                     });
                 });
-            })
-            .catch(function(error) {
-                console.log('❌ Error registrando SW:', error);
-                
-                // Debug adicional
-                navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                    console.log('📋 SWs actualmente registrados:', registrations.length);
-                });
             });
-        });
-    } else {
-        console.log('❌ Service Worker no soportado en este navegador');
+        } else {
+            console.log('❌ Service Worker no soportado en este navegador');
+        }
     }
-}
 
-// Ejecutar el registro
-registerServiceWorker();
+    // Ejecutar el registro
+    registerServiceWorker();
     
 
     // ---- FUNCIONES DE NAVEGACIÓN Y LÓGICA DE LA APLICACIÓN ----
@@ -238,11 +246,57 @@ registerServiceWorker();
     if (btnGuardarPuntos){
         btnGuardarPuntos.addEventListener("click", () => {
             console.log("Botón 'Guardar Puntos' pulsado. Llamando a guardar puntuación...");
-              guardarPuntuacionEnHistorial();
+             guardarPuntuacionEnHistorial();
         });
     }
 
-  // Funciones de historial y API
+    // --- FUNCIONES DE LÓGICA DE RACHA (STREAK) ---
+    function obtenerFechaHoy() {
+        return new Date().toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    }
+
+    function obtenerFechaAyer() {
+        const ayer = new Date();
+        ayer.setDate(ayer.getDate() - 1);
+        return ayer.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    }
+
+    function actualizarRachaDisplay() {
+        if (rachaElemento) {
+            const iconoRacha = (rachaActual > 0) ? ' 🔥' : '';
+            rachaElemento.textContent = rachaActual.toString() + iconoRacha;
+        }
+    }
+
+    function actualizarRacha() {
+        const hoy = obtenerFechaHoy();
+        const ayer = obtenerFechaAyer();
+
+        if (!ultimaFechaActividad) {
+            rachaActual = 1;
+            console.log("Racha iniciada en 1.");
+        } else if (ultimaFechaActividad === hoy) {
+            console.log("Racha ya mantenida hoy. Puntos añadidos.");
+            // No hace nada, solo garantiza que la racha no se reinicie si ya se jugó hoy.
+        } else if (ultimaFechaActividad === ayer) {
+            rachaActual++;
+            console.log(`Racha continuada: ${rachaActual}`);
+        } else {
+            rachaActual = 1;
+            console.log("Racha rota. Reiniciada en 1.");
+        }
+        
+        // Guardar la fecha de hoy y el valor de la racha
+        ultimaFechaActividad = hoy; 
+        localStorage.setItem('rachaActual', rachaActual.toString());
+        localStorage.setItem('ultimaFechaActividad', ultimaFechaActividad);
+        
+        actualizarRachaDisplay(); 
+    }
+    // <<< FIN CÓDIGO RACHA >>>
+
+
+    // Funciones de historial y API
     function guardarPuntuacionEnHistorial() {
         console.log("Dentro de guardarPuntuacionEnHistorial()...");
         const userData = JSON.parse(localStorage.getItem('userData'));
@@ -262,9 +316,9 @@ registerServiceWorker();
                 localStorage.setItem("historialPuntos", JSON.stringify(historial));
             }
             puntosUltimaSesion = puntos;
-           localStorage.setItem("puntosUltimaSesionGuardados", puntosUltimaSesion.toString());
-           localStorage.setItem('puntosTotales', puntos.toString()); 
-           return;
+            localStorage.setItem("puntosUltimaSesionGuardados", puntosUltimaSesion.toString());
+            localStorage.setItem('puntosTotales', puntos.toString()); 
+            return;
             
         }
 
@@ -278,50 +332,50 @@ registerServiceWorker();
         // --- LÓGICA PARA DETERMINAR SI LA ACTIVIDAD FUE COMPLETADA ---
         let isCompleted = false;
         // Comprobamos si la actividad tiene preguntas y si el índice actual ha llegado al final
-if (actividadActual && leccionActual && leccionActual.palabras) {
-    
-    // La lógica varía según el juego. Aquí un ejemplo para los que usan un índice simple.
-    // Asumimos que los juegos terminan cuando el índice llega al total de palabras.
-    let totalItems = leccionActual.palabras.length;
-    let currentIndex = 0;
+    if (actividadActual && leccionActual && leccionActual.palabras) {
+        
+        // La lógica varía según el juego. Aquí un ejemplo para los que usan un índice simple.
+        // Asumimos que los juegos terminan cuando el índice llega al total de palabras.
+        let totalItems = leccionActual.palabras.length;
+        let currentIndex = 0;
 
-    if (actividadActual === 'traducir') {
-        currentIndex = traducirIndice;
-    } else if (actividadActual === 'eleccion-multiple') {
-        currentIndex = eleccionIndice;
-    } else if (actividadActual === 'escuchar') {
-        currentIndex = escucharIndice;
-    }
-    // Para 'emparejar', la lógica es cuando se termina el último bloque.
-    else if (actividadActual === 'emparejar') {
-        if (emparejarBloque * BLOQUE_TAMANIO >= totalItems) {
+        if (actividadActual === 'traducir') {
+            currentIndex = traducirIndice;
+        } else if (actividadActual === 'eleccion-multiple') {
+            currentIndex = eleccionIndice;
+        } else if (actividadActual === 'escuchar') {
+            currentIndex = escucharIndice;
+        }
+        // Para 'emparejar', la lógica es cuando se termina el último bloque.
+        else if (actividadActual === 'emparejar') {
+            if (emparejarBloque * BLOQUE_TAMANIO >= totalItems) {
+                isCompleted = true;
+            }
+        }else if (actividadActual === 'pronunciacion'){
+            currentIndex = indicePalabraActual;
+        }
+        
+        // Comprobación para los juegos basados en índice
+        if (currentIndex >= totalItems) {
             isCompleted = true;
         }
-    }else if (actividadActual === 'pronunciar'){
-        currentIndex = pronunciarIndice;
     }
-    
-    // Comprobación para los juegos basados en índice
-    if (currentIndex >= totalItems) {
-        isCompleted = true;
-    }
-}
 
-       const progressData = {
-    user: userData.id,
-    lessonName: leccionActual.nombre, 
-    taskName: actividadActual,
-    score: puntosSesion,
-    completed: isCompleted // <-- ¡Usamos la variable que acabamos de calcular!
-};
+        const progressData = {
+        user: userData.id,
+        lessonName: leccionActual.nombre, 
+        taskName: actividadActual,
+        score: puntosSesion,
+        completed: isCompleted // <-- ¡Usamos la variable que acabamos de calcular!
+    };
 
-console.log("Enviando datos de progreso con 'completed' dinámico:", progressData);
+    console.log("Enviando datos de progreso con 'completed' dinámico:", progressData);
 
         fetch(`${API_BASE_URL}/api/progress`, {
-           method: 'POST',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify(progressData)
-       })
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(progressData)
+        })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error al guardar el progreso en el servidor.');
@@ -403,12 +457,12 @@ console.log("Enviando datos de progreso con 'completed' dinámico:", progressDat
     function iniciarTraducir() {
         traducirPalabras = [...leccionActual.palabras];
         traducirIndice = 0;
-         mezclarPalabras(traducirPalabras);
-         mostrarPalabraTraducir();
+          mezclarPalabras(traducirPalabras);
+          mostrarPalabraTraducir();
     }
-  function mezclarPalabras(array){
-            array.sort(() => Math.random() - 0.5);
-        }
+    function mezclarPalabras(array){
+          array.sort(() => Math.random() - 0.5);
+    }
     
     function mostrarPalabraTraducir() {
         if (traducirIndice >= traducirPalabras.length) {
@@ -416,7 +470,7 @@ console.log("Enviando datos de progreso con 'completed' dinámico:", progressDat
             return;
           
         }
-      
+        
         
         const palabra = traducirPalabras[traducirIndice];
         if (actividadJuego) {
@@ -444,6 +498,11 @@ console.log("Enviando datos de progreso con 'completed' dinámico:", progressDat
             }
             sonidoCorrcto.play();
             puntos++;
+            
+            // <<< INTEGRACIÓN RACHA >>>
+            actualizarRacha(); 
+            // <<< FIN INTEGRACIÓN RACHA >>>
+            
             traducirIndice++;
             actualizarPuntos();
             localStorage.setItem('puntosTotales', puntos.toString());
@@ -467,7 +526,7 @@ console.log("Enviando datos de progreso con 'completed' dinámico:", progressDat
     let emparejarBloque = 0;
     const BLOQUE_TAMANIO = 10;
     let bloquePalabrasActual = []; 
-  
+    
 
     function iniciarEmparejar() {
         emparejarPalabras = [...leccionActual.palabras];
@@ -523,79 +582,84 @@ console.log("Enviando datos de progreso con 'completed' dinámico:", progressDat
     // La voy a mover en el siguiente paso.
 }
 
-       // ... después de cargarBloqueEmparejar o al mismo nivel de ámbito global
-function seleccionarEmparejar(tipo, btn, valor) {
-    // Asegúrate de que 'feedback', 'puntos', 'actualizarPuntos', 'sonidoCorrcto', 'sonidoIncorrecto'
-    // sean accesibles globalmente o pasados como argumentos si son locales.
-    // Por la forma en que los usas, asumo que son globales.
-    const feedback = document.getElementById("mensaje-feedback"); // Mejor obtenerlo aquí cada vez si no es global
+        // ... después de cargarBloqueEmparejar o al mismo nivel de ámbito global
+    function seleccionarEmparejar(tipo, btn, valor) {
+        // Asegúrate de que 'feedback', 'puntos', 'actualizarPuntos', 'sonidoCorrcto', 'sonidoIncorrecto'
+        // sean accesibles globalmente o pasados como argumentos si son locales.
+        // Por la forma en que los usas, asumo que son globales.
+        const feedback = document.getElementById("mensaje-feedback"); // Mejor obtenerlo aquí cada vez si no es global
 
-    if (emparejarSeleccionados.length === 2) return;
-    if (emparejarSeleccionados.find(s => s.tipo === tipo)) return;
-    btn.classList.add("seleccionada");
-    emparejarSeleccionados.push({ tipo, btn, valor });
-    if (emparejarSeleccionados.length === 2) {
-        let palabraAleman, palabraEspanol;
-        if (emparejarSeleccionados[0].tipo === "aleman") {
-            palabraAleman = emparejarSeleccionados[0].valor;
-            palabraEspanol = emparejarSeleccionados[1].valor;
-        } else {
-            palabraAleman = emparejarSeleccionados[1].valor;
-            palabraEspanol = emparejarSeleccionados[0].valor;
-        }
-        
-        // Usa la variable global/externa
-        const correcto = bloquePalabrasActual.some(p => p.aleman === palabraAleman && p.espanol === palabraEspanol);
-        if (correcto) {
-            puntos++;
-            actualizarPuntos();
-            localStorage.setItem('puntosTotales', puntos.toString());
-            if (feedback) {
-                feedback.textContent = "¡Correcto!";
-                feedback.style.color = "green";
+        if (emparejarSeleccionados.length === 2) return;
+        if (emparejarSeleccionados.find(s => s.tipo === tipo)) return;
+        btn.classList.add("seleccionada");
+        emparejarSeleccionados.push({ tipo, btn, valor });
+        if (emparejarSeleccionados.length === 2) {
+            let palabraAleman, palabraEspanol;
+            if (emparejarSeleccionados[0].tipo === "aleman") {
+                palabraAleman = emparejarSeleccionados[0].valor;
+                palabraEspanol = emparejarSeleccionados[1].valor;
+            } else {
+                palabraAleman = emparejarSeleccionados[1].valor;
+                palabraEspanol = emparejarSeleccionados[0].valor;
             }
-            sonidoCorrcto.play();
-            emparejarSeleccionados.forEach(s => {
-                s.btn.style.visibility = "hidden";
-                s.btn.disabled = true;
-            });
             
-            // --- ¡Añade esta línea para eliminar la pareja de bloquePalabrasActual! ---
-            // Filtra las palabras, eliminando la pareja que acaba de ser acertada
-            bloquePalabrasActual = bloquePalabrasActual.filter(p => !(p.aleman === palabraAleman && p.espanol === palabraEspanol));
-            // -------------------------------------------------------------------
-
-            if (bloquePalabrasActual.length === 0) { // <-- Ahora sí verificará el tamaño del bloque actual
-                emparejarBloque++;
-                if (emparejarBloque * BLOQUE_TAMANIO >= emparejarPalabras.length) {
-                    if (actividadJuego) actividadJuego.innerHTML = `<p>Has terminado la actividad Emparejar.</p>`;
-                } else {
-                    setTimeout(() => {
-                        cargarBloqueEmparejar();
-                        if (feedback) feedback.textContent = "";
-                    }, 1000);
+            // Usa la variable global/externa
+            const correcto = bloquePalabrasActual.some(p => p.aleman === palabraAleman && p.espanol === palabraEspanol);
+            if (correcto) {
+                puntos++;
+                
+                // <<< INTEGRACIÓN RACHA >>>
+                actualizarRacha(); 
+                // <<< FIN INTEGRACIÓN RACHA >>>
+                
+                actualizarPuntos();
+                localStorage.setItem('puntosTotales', puntos.toString());
+                if (feedback) {
+                    feedback.textContent = "¡Correcto!";
+                    feedback.style.color = "green";
                 }
-            }
-        } else {
-            puntos = Math.max(0, puntos - 1);
-            actualizarPuntos();
-            localStorage.setItem('puntosTotales', puntos.toString());
-            if (feedback) {
-                feedback.textContent = "Incorrecto. Intenta de nuevo.";
-                feedback.style.color = "red";
-            }
-            sonidoIncorrecto.play();
-            setTimeout(() => {
+                sonidoCorrcto.play();
                 emparejarSeleccionados.forEach(s => {
-                    s.btn.classList.remove("seleccionada");
+                    s.btn.style.visibility = "hidden";
+                    s.btn.disabled = true;
                 });
-                emparejarSeleccionados = [];
-                if (feedback) feedback.textContent = "";
-            }, 1000);
+                
+                // --- ¡Añade esta línea para eliminar la pareja de bloquePalabrasActual! ---
+                // Filtra las palabras, eliminando la pareja que acaba de ser acertada
+                bloquePalabrasActual = bloquePalabrasActual.filter(p => !(p.aleman === palabraAleman && p.espanol === palabraEspanol));
+                // -------------------------------------------------------------------
+
+                if (bloquePalabrasActual.length === 0) { // <-- Ahora sí verificará el tamaño del bloque actual
+                    emparejarBloque++;
+                    if (emparejarBloque * BLOQUE_TAMANIO >= emparejarPalabras.length) {
+                        if (actividadJuego) actividadJuego.innerHTML = `<p>Has terminado la actividad Emparejar.</p>`;
+                    } else {
+                        setTimeout(() => {
+                            cargarBloqueEmparejar();
+                            if (feedback) feedback.textContent = "";
+                        }, 1000);
+                    }
+                }
+            } else {
+                puntos = Math.max(0, puntos - 1);
+                actualizarPuntos();
+                localStorage.setItem('puntosTotales', puntos.toString());
+                if (feedback) {
+                    feedback.textContent = "Incorrecto. Intenta de nuevo.";
+                    feedback.style.color = "red";
+                }
+                sonidoIncorrecto.play();
+                setTimeout(() => {
+                    emparejarSeleccionados.forEach(s => {
+                        s.btn.classList.remove("seleccionada");
+                    });
+                    emparejarSeleccionados = [];
+                    if (feedback) feedback.textContent = "";
+                }, 1000);
+            }
+            emparejarSeleccionados = [];
         }
-        emparejarSeleccionados = [];
     }
-}
 
     // Código de la actividad "Elección Múltiple"
     let eleccionPalabras = [];
@@ -643,6 +707,11 @@ function seleccionarEmparejar(tipo, btn, valor) {
                     }
                     sonidoCorrcto.play();
                     puntos++;
+                    
+                    // <<< INTEGRACIÓN RACHA >>>
+                    actualizarRacha(); 
+                    // <<< FIN INTEGRACIÓN RACHA >>>
+                    
                     actualizarPuntos();
                     localStorage.setItem('puntosTotales', puntos.toString());
                     eleccionIndice++;
@@ -721,6 +790,11 @@ function seleccionarEmparejar(tipo, btn, valor) {
             }
             sonidoCorrcto.play();
             puntos++;
+            
+            // <<< INTEGRACIÓN RACHA >>>
+            actualizarRacha(); 
+            // <<< FIN INTEGRACIÓN RACHA >>>
+            
             escucharIndice++;
             actualizarPuntos();
             localStorage.setItem('puntosTotales', puntos.toString());
@@ -804,6 +878,11 @@ function seleccionarEmparejar(tipo, btn, valor) {
                 }
                 sonidoCorrcto.play();
                 puntos++;
+                
+                // <<< INTEGRACIÓN RACHA >>>
+                actualizarRacha(); 
+                // <<< FIN INTEGRACIÓN RACHA >>>
+                
                 actualizarPuntos();
                 localStorage.setItem('puntosTotales', puntos.toString());
                 indicePalabraActual++;
@@ -848,4 +927,7 @@ function seleccionarEmparejar(tipo, btn, valor) {
     mostrarPantalla("pantalla-lecciones");
     mostrarLecciones();
     actualizarPuntos();
+    // <<< INICIO CÓDIGO RACHA - Carga Inicial >>>
+    actualizarRachaDisplay();
+    // <<< FIN CÓDIGO RACHA - Carga Inicial >>>
 });
