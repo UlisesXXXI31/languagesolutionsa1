@@ -272,13 +272,26 @@ function calcularDiasEntreFechas(fechaA, fechaB) {
 }
 
 function actualizarRachaDisplay() {
-    if (rachaElemento) {
-        // La llama solo se muestra si la racha es > 0
-        const iconoRacha = (rachaActual > 0) ? ' 🔥' : '';
-        rachaElemento.textContent = rachaActual.toString() + iconoRacha;
+    // Referencias a los nuevos elementos del DOM
+    const rachaNumeroEl = document.getElementById('racha-numero');
+    const rachaImagenEl = document.getElementById('racha-imagen');
+    
+    if (rachaNumeroEl) {
+        // Muestra solo el número de racha
+        rachaNumeroEl.textContent = rachaActual.toString();
+    }
+
+    if (rachaImagenEl) {
+        // Controla la visibilidad de la imagen
+        if (rachaActual > 0) {
+            // Si la racha es > 0, la imagen es visible.
+            rachaImagenEl.style.visibility = 'visible';
+        } else {
+            // Si la racha es 0 (decaimiento total), la imagen se oculta.
+            rachaImagenEl.style.visibility = 'hidden';
+        }
     }
 }
-
 function actualizarRacha() {
     const hoy = obtenerFechaHoy();
     
