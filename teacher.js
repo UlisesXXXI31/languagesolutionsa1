@@ -192,20 +192,101 @@ document.addEventListener('DOMContentLoaded', async () => {
         mostrarPantalla('student-list');
     });
 
-    // Evento para añadir un nuevo profesor (Lógica omitida por ser igual, solo se actualiza la llamada a fetchAndStoreStudents)
+  // Evento para añadir un nuevo profesor al enviar el formulario
     teacherForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        // ... (Tu lógica de validación y fetch aquí) ...
-        // ... (Si es exitoso) ...
-        // await fetchAndStoreStudents(); // Actualizar la lista después de añadir
+        
+        // Uso de las referencias correctas del DOM
+        const name = teacherNameInput.value; 
+        const email = teacherEmailInput.value;
+        const password = generateRandomPassword(); // Función definida en teacher.js
+        const role = document.getElementById('teacher-role').value; // Usar el campo de rol
+        
+        teacherStatusMessage.textContent = "Añadiendo profesor...";
+        teacherStatusMessage.style.color = "black";
+
+        if (!email.endsWith('@europaschool.org')) {
+            teacherStatusMessage.textContent = "Error: El correo debe terminar en @europaschool.org";
+            teacherStatusMessage.style.color = "red";
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/users/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ name, email, password, role })
+            });
+            
+            const data = await response.json();
+
+            if (response.ok) {
+                teacherStatusMessage.textContent = `¡Profesor ${name} añadido con éxito!`;
+                teacherStatusMessage.style.color = "green";
+                alert(`¡Importante! La contraseña temporal para ${name} es: ${password}`);
+                teacherForm.reset();
+                // ✅ LLAMADA CLAVE: Actualiza la lista de alumnos
+                await fetchAndStoreStudents(); 
+            } else {
+                teacherStatusMessage.textContent = `Error al añadir profesor: ${data.message}`;
+                teacherStatusMessage.style.color = "red";
+            }
+        } catch (error) {
+            teacherStatusMessage.textContent = "Error de red. Intenta de nuevo más tarde.";
+            teacherStatusMessage.style.color = "red";
+            console.error("Error:", error);
+        }
     });
 
-    // Evento para añadir un nuevo alumno (Lógica omitida por ser igual, solo se actualiza la llamada a fetchAndStoreStudents)
+    // Evento para añadir un nuevo alumno al enviar el formulario
     studentForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        // ... (Tu lógica de validación y fetch aquí) ...
-        // ... (Si es exitoso) ...
-        // await fetchAndStoreStudents(); // Actualizar la lista después de añadir
+        
+        // Uso de las referencias correctas del DOM
+        const name = studentNameInput.value; 
+        const email = studentEmailInput.value;
+        const password = 'EisA1'; // Contraseña predeterminada
+        const role = document.getElementById('student-role-add').value; // Usar el campo de rol
+        
+        studentStatusMessage.textContent = "Añadiendo alumno...";
+        studentStatusMessage.style.color = "black";
+
+        if (!email.endsWith('@europaschool.org')) {
+            studentStatusMessage.textContent = "Error: El correo debe terminar en @europaschool.org";
+            studentStatusMessage.style.color = "red";
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/users/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ name, email, password, role })
+            });
+            
+            const data = await response.json();
+
+            if (response.ok) {
+                studentStatusMessage.textContent = `¡Alumno ${name} añadido con éxito!`;
+                studentStatusMessage.style.color = "green";
+                studentForm.reset();
+                // ✅ LLAMADA CLAVE: Actualiza la lista de alumnos
+                await fetchAndStoreStudents(); 
+            } else {
+                studentStatusMessage.textContent = `Error al añadir alumno: ${data.message}`;
+                studentStatusMessage.style.color = "red";
+            }
+        } catch (error) {
+            studentStatusMessage.textContent = "Error de red. Intenta de nuevo más tarde.";
+            studentStatusMessage.style.color = "red";
+            console.error("Error:", error);
+        }
     });
     
     // Función para generar una contraseña aleatoria de 8 caracteres
