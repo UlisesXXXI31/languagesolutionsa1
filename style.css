@@ -133,4 +133,163 @@ h2, h3 {
 .leccion-btn, .actividad-btn {
     padding: 25px;
     font-size: 1.2rem;
-    font-weight: 800
+    font-weight: 800;
+    text-align: center;
+    border-radius: 15px;
+    background: linear-gradient(135deg, var(--primary-color), #4dd0e1); /* Degradado */
+    box-shadow: 4px 4px 8px rgba(0, 188, 212, 0.5); /* Sombra fuerte */
+}
+
+.leccion-btn:hover, .actividad-btn:hover {
+    background: linear-gradient(135deg, #4dd0e1, var(--primary-color));
+    transform: scale(1.05); /* Ligeramente más grande */
+}
+
+/* ------------------- INPUTS Y JUEGO ------------------- */
+
+input[type="text"] {
+    width: 90%;
+    padding: 15px;
+    margin: 20px 0;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    background-color: var(--background-color);
+    box-shadow: var(--inner-shadow);
+    transition: box-shadow 0.3s;
+}
+
+input[type="text"]:focus {
+    background-color: #fff;
+    box-shadow: var(--inner-shadow), 0 0 5px var(--secondary-color);
+    outline: none;
+}
+
+/* Botones de opción (Emparejar/Múltiple) */
+.btn-palabra, .btn-opcion {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 15px;
+    font-size: 1rem;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+}
+
+.btn-palabra.seleccionada {
+    background-color: var(--secondary-color); 
+    box-shadow: 0 0 10px var(--secondary-color);
+}
+
+.contenedor-palabras {
+    display: grid;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+/* Feedback */
+#mensaje-feedback {
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* ------------------- ESTILO BOTÓN VERIFICAR (CORRECCIÓN DE POSICIÓN) ------------------- */
+
+#btn-verificar {
+    /* Estilo para hacerlo más prominente y centrado */
+    background-color: var(--success-color); /* Verde para indicar acción positiva */
+    box-shadow: 0 4px 6px rgba(76, 175, 80, 0.4); 
+    padding: 15px 30px; 
+    font-size: 1.2rem;
+    font-weight: 800;
+    display: block; 
+    
+    /* MARGEN CLAVE: Separa el botón de los elementos de navegación inferiores */
+    margin-top: 30px; 
+    margin-bottom: 40px; 
+    
+    /* Centrar en el contenedor */
+    width: 100%;
+    max-width: 300px; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#btn-verificar:hover {
+    background-color: #388e3c;
+    transform: translateY(-2px);
+}
+
+/* ------------------- TABLAS (Ranking/Historial) ------------------- */
+
+table {
+    width: 100%;
+    border-collapse: separate; 
+    border-spacing: 0;
+    margin-top: 20px;
+    overflow: hidden; 
+    border-radius: 10px;
+    box-shadow: var(--soft-shadow);
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #cfd8dc;
+}
+
+th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+tr:nth-child(even) {
+    background-color: var(--background-color);
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.tabla-ranking tr.usuario-actual {
+    background-color: #ffe0b2; 
+    font-weight: 700;
+}
+
+/* ------------------- FOOTER ------------------- */
+footer {
+    padding: 15px 0;
+    text-align: center;
+    color: #999;
+    font-size: 0.9rem;
+}
+
+/* ------------------- MEDIA QUERIES (Responsivo) ------------------- */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    header > button, header > p, header > div {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    .pantalla {
+        padding: 15px;
+    }
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    /* Asegurar que los botones Volver se separen en móvil */
+    #pantalla-actividad .btn-volver {
+        margin-top: 15px;
+        margin-right: 10px;
+    }
+}
