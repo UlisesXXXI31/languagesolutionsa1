@@ -114,6 +114,10 @@ button:active {
     box-shadow: var(--soft-shadow);
     margin-top: 20px;
 }
+.pantalla-oculta {
+    /* Esta es la regla crucial para ocultar las pantallas */
+    display: none;
+}
 
 .grid {
     display: grid;
